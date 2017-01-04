@@ -5,7 +5,10 @@ const {retrieveDataSource,construct,fetchAll}=require('./lib');
 
 
 const sqlFile=fs.createWriteStream(__dirname + '/sql.txt', {flags : 'w'});;
-retrieveDataSource()
+const defaultFilePath=path.join(__dirname,"goods.xls")
+
+// 截取Excel第273行~1200行
+retrieveDataSource(defaultFilePath,272,1199)
     .then(list=> list.map(i=>{
         return {
             id:i.id,
@@ -16,4 +19,6 @@ retrieveDataSource()
     }))
     .then(list=>{
         fetchAll(list,sqlFile,4000);
+    }).catch(e=>{
+        console.log(e);
     });
